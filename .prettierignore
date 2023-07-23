@@ -1,0 +1,10 @@
+# Add files here to ignore them from prettier formatting
+node_modules
+dist
+migrations
+test
+tests
+spec
+**/*.spec.ts
+out
+*-lock.json

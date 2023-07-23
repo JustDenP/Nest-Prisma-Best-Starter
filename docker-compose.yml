@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  database:
+    image: postgres:15.3-alpine
+    container_name: database
+    env_file:
+      - .env
+    restart: until-stopped
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - DATABASE_URL=${DATABASE_URL}
+      - TZ=UTC
+      - PGTZ=UTC
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
+    networks:
+      - main-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  main-network:
+    name: main-network
+    driver: bridge
