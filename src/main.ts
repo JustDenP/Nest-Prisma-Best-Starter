@@ -29,11 +29,6 @@ import { ApiConfigService } from './modules/@lib/config/config.service';
 /* Set TimeZone */
 process.env.TZ = 'UTC';
 
-
-
-
-
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
     logger: await createLogger(),
