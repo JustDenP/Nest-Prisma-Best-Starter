@@ -42,14 +42,14 @@ class DeepPageOptionsDTO {
   to?: string;
 
   /**
-   * The `withDeleted` property is a boolean flag that
-   * indicates whether to include deleted items in the
+   * The `deleted` property is a boolean flag that
+   * indicates whether to get only deleted items in the
    * results or not.
    */
   @IsOptional()
   @ToBoolean()
   @IsBoolean()
-  withDeleted?: boolean = false;
+  deleted?: boolean = false;
 }
 
 export class PageOptionsDTO extends DeepPageOptionsDTO {
@@ -75,7 +75,7 @@ export class PageOptionsDTO extends DeepPageOptionsDTO {
   @IsOptional()
   @IsString()
   @MaxLength(30)
-  readonly sort?: string = 'createdAt';
+  readonly sort?: string = 'created_at';
 }
 
 export const getSkip = (page: number, take: number): number => {

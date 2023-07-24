@@ -8,8 +8,8 @@
     "start:prod": "node dist/main",
     "format": "prettier --write --cache \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --cache --fix --ignore-path \"../../.eslintignore\"",
-    "migrate": "npx prisma migrate dev",
     "reset": "npx prisma migrate reset",
+    "migrate": "npx prisma migrate dev",
     "seed": "npx prisma db seed"
   },
   "dependencies": {

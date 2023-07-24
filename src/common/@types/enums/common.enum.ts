@@ -1,12 +1,11 @@
 export enum NodeEnv {
-  Development = 'development',
-  Production = 'production',
-  Test = 'test',
+  DEVELOPMENT = 'development',
+  PRODUCTION = 'production',
 }
 
-export enum Roles {
-  ADMIN = 'admin',
-  CLIENT = 'client',
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 export enum QueryOrder {

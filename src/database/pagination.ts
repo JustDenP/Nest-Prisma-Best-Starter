@@ -5,7 +5,7 @@ import { PageDTO, PageMetaDTO } from './pagination/page.dto';
 
 /**
  * Offset pagination
- * @example http://localhost:3333/users/?page=1&take=20&order=ASC&sort=createdAt&where=id&is=10&from=2023-07-23&to=2023-07-23
+ * @example http://localhost:3333/users/?page=1&take=30&order=ASC&sort=created_at&from=2023-07-22&to=2023-07-26&deleted=true&where=email&is=123%40gmail.com
  */
 export const Pagination = {
   paginate: <T>(pageOptionsDTO: PageOptionsDTO, total: number, results: T[]): PageDTO<T> => {
@@ -20,7 +20,7 @@ export const Pagination = {
   },
 
   getQuery: (pageOptionsDTO: PageOptionsDTO) => {
-    const { take, page, sort, order, where, is, from, to } = pageOptionsDTO;
+    const { take, page, sort, order, where, is, from, to, deleted } = pageOptionsDTO;
     const skip = getSkip(page, take);
 
     /* Prepare the query objects */
@@ -30,43 +30,52 @@ export const Pagination = {
     query.take = take;
     query.skip = skip;
 
+    query.where = {
+      deleted_at: deleted
+        ? null
+        : {
+            not: null,
+          },
+    };
+
     if (where && is) {
-      query.where = {
+      /* Filter created_at greater than or equal */
+      deepQuery.push({
         [where]: StringUtils.stringOrNumber(is),
-      };
+      });
     }
 
     if (from) {
-      /* Filter createdAt greater than or equal */
+      /* Filter created_at greater than or equal */
       deepQuery.push({
-        createdAt: {
+        created_at: {
           gte: new Date(from),
         },
       });
     }
 
     if (to) {
-      /* Filter createdAt less than or equal */
+      /* Filter created_at less than or equal */
       deepQuery.push({
-        createdAt: {
+        created_at: {
           lte: new Date(to),
         },
       });
     }
 
-    if (sort && order) {
-      query.orderBy = [
-        {
-          [sort]: order.toLowerCase(),
-        },
-      ];
-    }
+    query.orderBy = [
+      {
+        [sort]: order.toLowerCase(),
+      },
+    ];
 
     /* Here we combine our where with nested queries */
     query.where = {
       ...query.where,
       AND: [...deepQuery],
     };
+
+    console.dir(query, { depth: null });
 
     return query;
   },

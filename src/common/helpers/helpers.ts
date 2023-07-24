@@ -6,11 +6,11 @@ import { NodeEnv } from '@common/@types/enums/common.enum';
 
 export const HelperService = {
   isDev(): boolean {
-    return process.env.NODE_ENV === NodeEnv.Development;
+    return process.env.NODE_ENV === NodeEnv.DEVELOPMENT;
   },
 
   isProd(): boolean {
-    return process.env.NODE_ENV === NodeEnv.Production;
+    return process.env.NODE_ENV === NodeEnv.PRODUCTION;
   },
 
   getAppRootDir() {
@@ -20,7 +20,7 @@ export const HelperService = {
       currentDirectory = join(currentDirectory, '..');
     }
 
-    return process.env.NODE_ENV === NodeEnv.Production
+    return process.env.NODE_ENV === NodeEnv.PRODUCTION
       ? join(currentDirectory, 'dist')
       : currentDirectory;
   },
