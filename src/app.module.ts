@@ -12,9 +12,10 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
+import { AppController } from 'app.controller';
 import { ApiConfigModule } from './modules/@lib/config/config.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
-import { AppController } from 'app.controller';
+import { UserModule } from '@modules/user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AppController } from 'app.controller';
     NestCacheModule,
     HealthCheckerModule,
     NestJwtModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
