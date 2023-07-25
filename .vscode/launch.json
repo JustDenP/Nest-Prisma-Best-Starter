@@ -5,11 +5,11 @@
       "name": "Nest: Node Debug",
       "request": "launch",
       "restart": true,
-      "runtimeArgs": ["run", "start:debug", "--workspace=api", "--inspect-brk"],
+      "runtimeArgs": ["run", "start:debug", "--inspect-brk"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
-    },
+    }
   ],
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
