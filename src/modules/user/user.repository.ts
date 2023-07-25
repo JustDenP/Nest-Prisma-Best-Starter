@@ -1,10 +1,10 @@
 import { NoContentException } from '@common/exceptions/no-content.exception';
+import { Pagination } from '@database/pagination';
+import { PageOptionsDTO } from '@database/pagination/page-options.dto';
+import { PageDTO } from '@database/pagination/page.dto';
+import { PrismaService } from '@database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { Pagination } from 'database/pagination';
-import { PageOptionsDTO } from 'database/pagination/page-options.dto';
-import { PageDTO } from 'database/pagination/page.dto';
-import { PrismaService } from 'database/prisma.service';
 
 @Injectable()
 export class UserRepository {
@@ -20,7 +20,6 @@ export class UserRepository {
       ]);
       return Pagination.paginate<User>(pageOptionsDTO, total, results);
     } catch (error: any) {
-      throw error;
       throw new NoContentException();
     }
   }

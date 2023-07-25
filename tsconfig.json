@@ -27,6 +27,7 @@
     "paths": {
       "@common/*": ["./common/*"],
       "@generated": ["./generated/index"],
+      "@database/*": ["./database/*"],
       "@lib/*": ["./modules/lib/*"],
       "@modules/*": ["./modules/*"]
     }

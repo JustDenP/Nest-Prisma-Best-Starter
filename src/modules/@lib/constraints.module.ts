@@ -1,6 +1,6 @@
 import { IsUniqueConstraint } from '@common/decorators/validators/is-unique.decorator';
+import { PrismaModule } from '@database/prisma.module';
 import { Module } from '@nestjs/common';
-import { PrismaModule } from 'database/prisma.module';
 
 const constraints = [IsUniqueConstraint];
 

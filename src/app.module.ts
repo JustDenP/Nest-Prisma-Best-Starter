@@ -16,7 +16,7 @@ import { UserModule } from '@modules/user/user.module';
 import { AppController } from 'app.controller';
 import { ApiConfigModule } from './modules/@lib/config/config.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
-import { ConstraintsModule } from '@modules/@lib/constrains.module';
+import { ConstraintsModule } from '@modules/@lib/constraints.module';
 
 @Module({
   imports: [
