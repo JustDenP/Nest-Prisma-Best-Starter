@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { Pagination } from 'database/pagination';
 import { PageOptionsDTO } from 'database/pagination/page-options.dto';
+import { PageDTO } from 'database/pagination/page.dto';
 import { PrismaService } from 'database/prisma.service';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class UserRepository {
   constructor(private readonly orm: PrismaService) {}
 
   /* Get paginated users */
-  async getPaginated(pageOptionsDTO: PageOptionsDTO) {
+  async _getPaginated(pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<User>> {
     try {
       const query = Pagination.getQuery(pageOptionsDTO);
       const [total, results] = await this.orm.$transaction([
@@ -19,16 +20,17 @@ export class UserRepository {
       ]);
       return Pagination.paginate<User>(pageOptionsDTO, total, results);
     } catch (error: any) {
+      throw error;
       throw new NoContentException();
     }
   }
 
-  async createUser(params: { data: Prisma.UserCreateInput }): Promise<User> {
+  async _create(params: { data: Prisma.UserCreateInput }): Promise<User> {
     const { data } = params;
     return this.orm.user.create({ data });
   }
 
-  async getUsers(params: {
+  async _findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
@@ -39,7 +41,7 @@ export class UserRepository {
     return this.orm.user.findMany({ skip, take, cursor, where, orderBy });
   }
 
-  async updateUser(params: {
+  async _update(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
   }): Promise<User> {
@@ -47,7 +49,27 @@ export class UserRepository {
     return this.orm.user.update({ where, data });
   }
 
-  async deleteUser(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
+  async _softDelete(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
+    const { where } = params;
+    return this.orm.user.update({
+      where,
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
+  async _restore(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
+    const { where } = params;
+    return this.orm.user.update({
+      where,
+      data: {
+        deletedAt: null,
+      },
+    });
+  }
+
+  async _permanentDelete(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
     return this.orm.user.delete({ where });
   }

@@ -5,12 +5,20 @@ import { PageDTO, PageMetaDTO } from './pagination/page.dto';
 
 /**
  * Offset pagination
- * @example http://localhost:3333/users/?page=1&take=30&order=ASC&sort=created_at&from=2023-07-22&to=2023-07-26&deleted=true&where=email&is=123%40gmail.com
+ * @example http://localhost:3333/users/?page=1&take=30&order=ASC&sort=createdAt&from=2023-07-22&to=2023-07-26&deleted=false&where=id&is=1
  */
 export const Pagination = {
-  paginate: <T>(pageOptionsDTO: PageOptionsDTO, total: number, results: T[]): PageDTO<T> => {
+  paginate: <T>(pageOptionsDTO: PageOptionsDTO, total: number, results: any[]): PageDTO<T> => {
     const pageMetaDTO = new PageMetaDTO({ pageOptionsDTO, total });
     const lastPage = pageMetaDTO.lastPage;
+
+    results.map((each) => {
+      if (each['password']) {
+        delete each['password'];
+
+        return each;
+      }
+    });
 
     if (lastPage >= pageMetaDTO.page) {
       return new PageDTO(results, pageMetaDTO);
@@ -31,7 +39,7 @@ export const Pagination = {
     query.skip = skip;
 
     query.where = {
-      deleted_at: deleted
+      deletedAt: deleted
         ? null
         : {
             not: null,
@@ -48,7 +56,7 @@ export const Pagination = {
     if (from) {
       /* Filter created_at greater than or equal */
       deepQuery.push({
-        created_at: {
+        createdAt: {
           gte: new Date(from),
         },
       });
@@ -57,7 +65,7 @@ export const Pagination = {
     if (to) {
       /* Filter created_at less than or equal */
       deepQuery.push({
-        created_at: {
+        createdAt: {
           lte: new Date(to),
         },
       });
@@ -74,8 +82,6 @@ export const Pagination = {
       ...query.where,
       AND: [...deepQuery],
     };
-
-    console.dir(query, { depth: null });
 
     return query;
   },

@@ -19,9 +19,10 @@ async function main() {
 const fakerUser = (random: boolean): any => ({
   role: random ? Role.ADMIN : Role.USER,
   email: faker.internet.email(),
-  first_name: faker.person.firstName(),
-  last_name: faker.person.lastName(),
-  deleted_at: random ? undefined : new Date(),
+  password: '123',
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
+  deletedAt: random ? undefined : new Date(),
 });
 
 main()
