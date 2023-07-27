@@ -1,9 +1,9 @@
 import {
+  registerDecorator,
   ValidationArguments as BaseValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  registerDecorator,
 } from 'class-validator';
 import { PrismaService } from 'database/prisma.service';
 

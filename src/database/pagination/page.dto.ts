@@ -1,4 +1,5 @@
 import { IsArray } from 'class-validator';
+
 import { PageOptionsDTO } from './page-options.dto';
 
 export class PageDTO<T> {

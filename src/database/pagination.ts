@@ -1,7 +1,8 @@
 import { NoContentException } from '@common/exceptions/no-content.exception';
 import { StringUtils } from '@common/helpers/types/string';
-import { PageOptionsDTO, getSkip } from './pagination/page-options.dto';
+
 import { PageDTO, PageMetaDTO } from './pagination/page.dto';
+import { getSkip, PageOptionsDTO } from './pagination/page-options.dto';
 
 /**
  * Offset pagination
@@ -22,9 +23,9 @@ export const Pagination = {
 
     if (lastPage >= pageMetaDTO.page) {
       return new PageDTO(results, pageMetaDTO);
-    } else {
-      throw new NoContentException();
     }
+
+    throw new NoContentException();
   },
 
   getQuery: (pageOptionsDTO: PageOptionsDTO) => {
@@ -40,10 +41,10 @@ export const Pagination = {
 
     query.where = {
       deletedAt: deleted
-        ? null
-        : {
+        ? {
             not: null,
-          },
+          }
+        : null,
     };
 
     if (where && is) {

@@ -1,8 +1,9 @@
 import { Role } from '@common/@types/enums/common.enum';
+import { PageOptionsDTO } from '@database/pagination/page-options.dto';
 import { Injectable } from '@nestjs/common';
+
 import { RegisterUserDTO } from './dto/sign/user-register.dto';
 import { UserRepository } from './user.repository';
-import { PageOptionsDTO } from '@database/pagination/page-options.dto';
 
 @Injectable()
 export class UserService {

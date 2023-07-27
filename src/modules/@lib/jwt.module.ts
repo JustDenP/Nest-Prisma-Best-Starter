@@ -10,7 +10,7 @@ import { ApiConfigService } from './config/config.service';
     JwtModule.registerAsync({
       imports: [ApiConfigModule],
       useFactory: async (configService: ApiConfigService) => ({
-        secret: configService.getString('jwt.jwtSecret'),
+        secret: configService.getString('token.jwtSecret'),
         signOptions: {
           algorithm: 'HS256',
         },

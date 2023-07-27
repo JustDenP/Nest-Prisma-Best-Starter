@@ -1,19 +1,17 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { RegisterUserDTO } from './dto/sign/user-register.dto';
-import { UserService } from './user.service';
 import { PageOptionsDTO } from '@database/pagination/page-options.dto';
+import { Controller_ } from '@modules/auth/decorators/auth-controller.decorator';
+import { AuthUser } from '@modules/auth/decorators/auth-user.decorator';
+import { Get, Query } from '@nestjs/common';
+import { User } from '@prisma/client';
 
-@Controller('users')
+import { UserService } from './user.service';
+
+@Controller_('users', true)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getPaginated(@Query() pageOptions: PageOptionsDTO) {
+  getPaginated(@AuthUser() user: User, @Query() pageOptions: PageOptionsDTO) {
     return this.userService.getPaginated(pageOptions);
-  }
-
-  @Post('register')
-  register(@Body() data: RegisterUserDTO) {
-    return this.userService.register(data);
   }
 }

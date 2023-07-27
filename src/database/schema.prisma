@@ -19,6 +19,8 @@ model User {
   password  String    @db.VarChar(100)
   firstName String?   @map("first_name") @db.VarChar(50)
   lastName  String?   @map("last_name") @db.VarChar(50)
+  isActive  Boolean   @default(true) @map("is_active")
+  lastLogin DateTime? @map("last_login") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz

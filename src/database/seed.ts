@@ -1,6 +1,7 @@
+import { faker } from '@faker-js/faker';
 import { PrismaClient, User } from '@prisma/client';
 import * as dotenv from 'dotenv';
-import { faker } from '@faker-js/faker';
+
 import { Role } from '../common/@types/enums/common.enum';
 
 const prisma = new PrismaClient();
@@ -9,10 +10,11 @@ async function main() {
   const fakerRounds = 20;
   dotenv.config();
   console.log('Seeding...');
+
   /// --------- Users ---------------
   for (let i = 0; i < fakerRounds; i++) {
     const random = faker.datatype.boolean();
-    await prisma.user.create({ data: fakerUser(random) });
+    prisma.user.create({ data: fakerUser(random) });
   }
 }
 

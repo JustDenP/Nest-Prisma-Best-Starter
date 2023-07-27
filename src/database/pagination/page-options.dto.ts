@@ -78,6 +78,5 @@ export class PageOptionsDTO extends DeepPageOptionsDTO {
   readonly sort?: string = 'created_at';
 }
 
-export const getSkip = (page: number, take: number): number => {
-  return page <= 0 ? (page = 0) : (page - 1) * take;
-};
+export const getSkip = (page: number, take: number): number =>
+  page <= 0 ? (page = 0) : (page - 1) * take;
