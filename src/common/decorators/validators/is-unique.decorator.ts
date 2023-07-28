@@ -41,7 +41,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage(context: IsUniqueValidationContext): string {
-    return `${context.property} must be unique`;
+    return `${context.property} must be unique.`;
   }
 }
 

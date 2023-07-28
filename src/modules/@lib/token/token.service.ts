@@ -1,3 +1,4 @@
+import { Msgs } from '@common/@types/constants/messages';
 import { ApiConfigService } from '@modules/@lib/config/config.service';
 import { UserRepository } from '@modules/user/user.repository';
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,13 +13,6 @@ export class TokenService {
     public readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
   ) {}
-
-  readonly msgs = {
-    malformed: 'Refresh token malformed!. Please login again!',
-    expired: 'Refresh token expired!. Please login again!',
-    notFound: 'Refresh token not found!. Please login again!',
-    forbidden: 'Access Denied. You do not have permission to access this resource.',
-  };
 
   private readonly BASE_OPTIONS: JwtSignOptions = {
     issuer: 'myapp',
@@ -63,11 +57,11 @@ export class TokenService {
       const user = await this.getUserFromRefreshTokenPayload(decoded);
 
       if (!user) throw new Error();
-      if (!user.isActive || user.deletedAt) throw new ForbiddenException(this.msgs.forbidden);
+      if (!user.isActive || user.deletedAt) throw new ForbiddenException(Msgs.exception.forbidden);
 
       return user;
     } catch (error) {
-      throw new UnauthorizedException(this.msgs.malformed);
+      throw new UnauthorizedException(Msgs.exception.malformed);
     }
   }
 
@@ -79,8 +73,8 @@ export class TokenService {
       return this.jwtService.verifyAsync(token);
     } catch (error) {
       throw error instanceof TokenExpiredError
-        ? new UnauthorizedException(this.msgs.expired)
-        : new UnauthorizedException(this.msgs.malformed);
+        ? new UnauthorizedException(Msgs.exception.expired)
+        : new UnauthorizedException(Msgs.exception.malformed);
     }
   }
 
@@ -89,7 +83,7 @@ export class TokenService {
    */
   async getUserFromRefreshTokenPayload(payload: JwtPayload): Promise<User> {
     const subId = payload.sub;
-    if (!subId) throw new UnauthorizedException(this.msgs.malformed);
+    if (!subId) throw new UnauthorizedException(Msgs.exception.malformed);
 
     return this.userRepository._findFirst({
       where: {

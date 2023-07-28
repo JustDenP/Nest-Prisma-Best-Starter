@@ -18,7 +18,7 @@ class IsGreaterThanConstraint implements ValidatorConstraintInterface {
     const property = arguments_.property;
     const [relatedPropertyName] = arguments_.constraints;
 
-    return `${property} should be greater than ${relatedPropertyName}`;
+    return `${property} should be greater than ${relatedPropertyName}.`;
   }
 }
 

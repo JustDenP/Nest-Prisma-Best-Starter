@@ -18,7 +18,7 @@ class IsEqualToConstraint implements ValidatorConstraintInterface {
     const property = arguments_.property;
     const [relatedPropertyName] = arguments_.constraints;
 
-    return `${property} should be equal to ${relatedPropertyName}`;
+    return `${property} should be equal to ${relatedPropertyName}.`;
   }
 }
 

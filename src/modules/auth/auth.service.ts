@@ -1,3 +1,4 @@
+import { Msgs } from '@common/@types/constants/messages';
 import { Role } from '@common/@types/enums/common.enum';
 import { CryptUtils } from '@common/helpers/crypt';
 import { TokenService } from '@modules/@lib/token/token.service';
@@ -16,11 +17,6 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  readonly msgs = {
-    wrongCredentials: 'Invalid email or password. Please check your credentials and try again.',
-    inactiveUser: 'You account has not been activated yet.',
-  };
-
   /**
    * It takes an email and a password, and returns the user if the password is correct
    */
@@ -34,12 +30,12 @@ export class AuthService {
       },
       true,
     );
-    if (!user) throw new UnauthorizedException(this.msgs.wrongCredentials);
-    if (!user.isActive) throw new ForbiddenException(this.msgs.inactiveUser);
+    if (!user) throw new UnauthorizedException(Msgs.exception.wrongCredentials);
+    if (!user.isActive) throw new ForbiddenException(Msgs.exception.inactiveUser);
 
     if (isPasswordLogin) {
       const isValid = await CryptUtils.validateHash(password, user.password);
-      if (!isValid) throw new UnauthorizedException(this.msgs.wrongCredentials);
+      if (!isValid) throw new UnauthorizedException(Msgs.exception.wrongCredentials);
     }
 
     return user;

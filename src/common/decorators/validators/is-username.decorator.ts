@@ -15,7 +15,7 @@ class IsUsernameConstraint implements ValidatorConstraintInterface {
   defaultMessage(argument: ValidationArguments) {
     const property = argument.property;
 
-    return `${property} must fulfill username's criteria`;
+    return `${property} must fulfill username's criteria.`;
   }
 }
 

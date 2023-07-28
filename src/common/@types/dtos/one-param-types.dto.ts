@@ -1,12 +1,15 @@
-import { IsNumberString, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsString } from 'class-validator';
 
 class ParamID {
-  @IsNumberString()
+  @Type(() => Number)
+  @IsInt()
   id!: number;
 }
 
 class ParamNum {
-  @IsNumberString()
+  @Type(() => Number)
+  @IsInt()
   param!: number;
 }
 

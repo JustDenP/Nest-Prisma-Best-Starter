@@ -1,3 +1,4 @@
+import { Msgs } from '@common/@types/constants/messages';
 import { NoContentException } from '@common/exceptions/no-content.exception';
 import { CryptUtils } from '@common/helpers/crypt';
 import { Pagination } from '@database/pagination';
@@ -41,8 +42,9 @@ export class UserRepository {
 
   async _findFirst(params: { where?: Prisma.UserWhereInput }, withPassword = false): Promise<User> {
     const { where } = params;
+    console.dir(params, { depth: null });
     const user = await this.orm.user.findFirst({ where });
-    if (!withPassword) delete user.password;
+    if (user && !withPassword) delete user.password;
 
     return user;
   }
@@ -57,7 +59,7 @@ export class UserRepository {
     const { skip, take = 200, cursor, where, orderBy } = params;
 
     /* Prevent performance issues if there will be too many users. */
-    if (take > 200) new ForbiddenException('Too many users requested.');
+    if (take > 200) new ForbiddenException(Msgs.exception.tooManyEntitiesRequested);
 
     const users = await this.orm.user.findMany({ skip, take, cursor, where, orderBy });
     users.map((each) => {

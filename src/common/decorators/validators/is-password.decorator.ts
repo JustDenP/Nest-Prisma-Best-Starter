@@ -16,7 +16,7 @@ class IsPasswordConstraint implements ValidatorConstraintInterface {
     const property = args.property;
 
     return `${property} should contain at least one lowercase letter,
-    one uppercase letter, one numeric digit, and one special character`;
+    one uppercase letter, one numeric digit, and one special character.`;
   }
 }
 

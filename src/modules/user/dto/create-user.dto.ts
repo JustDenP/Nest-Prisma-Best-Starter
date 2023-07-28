@@ -1,7 +1,6 @@
 import { Role } from '@common/@types/enums/common.enum';
 import { IsPassword } from '@common/decorators/validators/is-password.decorator';
 import { IsUnique } from '@common/decorators/validators/is-unique.decorator';
-import { IsUsername } from '@common/decorators/validators/is-username.decorator';
 import { MinMaxLength } from '@common/decorators/validators/min-max-length.decorator';
 import { IsEmail, IsEnum, IsString } from 'class-validator';
 export class CreateUserDTO {
