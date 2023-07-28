@@ -1,18 +1,27 @@
-import { Msgs } from '@common/@types/constants/messages';
 import { NoContentException } from '@common/exceptions/no-content.exception';
-import { CryptUtils } from '@common/helpers/crypt';
 import { Pagination } from '@database/pagination';
 import { PageDTO } from '@database/pagination/page.dto';
 import { PageOptionsDTO } from '@database/pagination/page-options.dto';
 import { PrismaService } from '@database/prisma.service';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly orm: PrismaService) {}
 
-  /* Get paginated users */
+  _create(params: { data: Prisma.UserCreateInput }): Promise<User> {
+    const { data } = params;
+
+    return this.orm.user.create({ data });
+  }
+
+  _findFirst(params: { where: Prisma.UserWhereInput }): Promise<User> {
+    const { where } = params;
+
+    return this.orm.user.findFirst({ where });
+  }
+
   async _getPaginated(pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<User>> {
     try {
       const query = Pagination.getQuery(pageOptionsDTO);
@@ -22,53 +31,21 @@ export class UserRepository {
       ]);
 
       return Pagination.paginate<User>(pageOptionsDTO, total, results);
-    } catch (error: any) {
+    } catch (error) {
       throw new NoContentException();
     }
   }
 
-  _create(params: { data: Prisma.UserCreateInput }): Promise<User> {
-    const { data } = params;
-    const { password } = data;
-    const hashed = CryptUtils.generateHash(password);
-
-    return this.orm.user.create({
-      data: {
-        ...data,
-        password: hashed,
-      },
-    });
-  }
-
-  async _findFirst(params: { where?: Prisma.UserWhereInput }, withPassword = false): Promise<User> {
-    const { where } = params;
-    console.dir(params, { depth: null });
-    const user = await this.orm.user.findFirst({ where });
-    if (user && !withPassword) delete user.password;
-
-    return user;
-  }
-
-  async _findMany(params: {
+  _findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
+    where: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
   }): Promise<User[]> {
-    const { skip, take = 200, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy } = params;
 
-    /* Prevent performance issues if there will be too many users. */
-    if (take > 200) new ForbiddenException(Msgs.exception.tooManyEntitiesRequested);
-
-    const users = await this.orm.user.findMany({ skip, take, cursor, where, orderBy });
-    users.map((each) => {
-      delete each['password'];
-
-      return each;
-    });
-
-    return users;
+    return this.orm.user.findMany({ skip, take, cursor, where, orderBy });
   }
 
   _update(params: {

@@ -1,5 +1,4 @@
 import { GeneratorUtils } from '@common/helpers/generator';
-import { RegisterUserDTO } from '@modules/user/dto/sign/user-register.dto';
 import { UserRepository } from '@modules/user/user.repository';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -9,6 +8,7 @@ import { Strategy } from 'passport-google-oauth20';
 
 import { ApiConfigService } from '../../@lib/config/config.service';
 import { AuthService } from '../auth.service';
+import { RegisterUserDTO } from '../dto/user-register.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google-oauth') {

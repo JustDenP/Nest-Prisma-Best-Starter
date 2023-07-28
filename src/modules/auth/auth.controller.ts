@@ -1,5 +1,4 @@
 import { TokenService } from '@modules/@lib/token/token.service';
-import { RegisterUserDTO } from '@modules/user/dto/sign/user-register.dto';
 import { Body, HttpCode, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
@@ -7,6 +6,7 @@ import { AuthService } from './auth.service';
 import { Controller_ } from './decorators/auth-controller.decorator';
 import { RefreshTokenDTO } from './dto/token.dto';
 import { UserLoginDTO } from './dto/user-login.dto';
+import { RegisterUserDTO } from './dto/user-register.dto';
 import { IAuthenticationResponse } from './types/auth-response';
 
 @Controller_('auth', false)

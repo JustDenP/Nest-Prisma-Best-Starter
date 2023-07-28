@@ -32,7 +32,7 @@ process.env.TZ = 'UTC';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
     logger: await createLogger(),
-    snapshot: true,
+    snapshot: false, // Turn on, if you will use paid Nest Devtools
   });
 
   createDependencyGraph(app);
@@ -101,12 +101,6 @@ async function bootstrap() {
   if (configService.getString('swagger.enabled')) {
     setupSwagger(app, configService.getNumber('app.port'));
   }
-
-  /**
-   * Exception filters
-   */
-  // app.useGlobalFilters(new HttpExceptionFilter());
-  // app.useGlobalFilters(new QueryFailedFilter());
 
   /**
    * Interceptors

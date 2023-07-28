@@ -1,6 +1,6 @@
 import { Msgs } from '@common/@types/constants/messages';
 import { ApiConfigService } from '@modules/@lib/config/config.service';
-import { UserRepository } from '@modules/user/user.repository';
+import { UserService } from '@modules/user/user.service';
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -9,7 +9,7 @@ import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 @Injectable()
 export class TokenService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
     public readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
   ) {}
@@ -85,7 +85,7 @@ export class TokenService {
     const subId = payload.sub;
     if (!subId) throw new UnauthorizedException(Msgs.exception.malformed);
 
-    return this.userRepository._findFirst({
+    return this.userService.findFirst({
       where: {
         id: Number(subId),
       },

@@ -9,7 +9,7 @@ export class CreateUserDTO {
    * @example ADMIN || USER
    */
   @IsEnum(Role)
-  roles: Role;
+  role: Role;
 
   /**
    * Email of user
