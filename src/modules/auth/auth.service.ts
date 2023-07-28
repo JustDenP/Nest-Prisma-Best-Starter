@@ -45,7 +45,7 @@ export class AuthService {
    */
   async login(credentials: UserLoginDTO, isPasswordLogin = true): Promise<IAuthenticationResponse> {
     const user = await this.validateUser(isPasswordLogin, credentials.email, credentials.password);
-    const updatedUser = await this.userService.update({
+    const updatedUser = await this.userRepository._update({
       where: { id: user.id },
       data: { lastLogin: new Date() },
     });
