@@ -60,7 +60,7 @@ export class UserRepository {
   _softDelete(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
 
-    return this.orm.user.update({
+    return this._update({
       where,
       data: {
         deletedAt: new Date(),
@@ -71,7 +71,7 @@ export class UserRepository {
   _restore(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
 
-    return this.orm.user.update({
+    return this._update({
       where,
       data: {
         deletedAt: null,

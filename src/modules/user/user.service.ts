@@ -10,6 +10,9 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  /**
+   * Find first entity
+   */
   async findFirst(params: { where: Prisma.UserWhereInput }, withPassword = false): Promise<User> {
     const { where } = params;
 
@@ -19,10 +22,16 @@ export class UserService {
     return user;
   }
 
+  /**
+   * Get paginated
+   */
   getPaginated(pageOptions: PageOptionsDTO) {
     return this.userRepository._getPaginated(pageOptions);
   }
 
+  /**
+   * Find all entities
+   */
   async findMany(params: {
     skip?: number;
     take?: number;
@@ -44,12 +53,30 @@ export class UserService {
     return users;
   }
 
+  /**
+   * Update an entity
+   */
   update(params: { where: Prisma.UserWhereUniqueInput; data: UpdateUserDTO }): Promise<User> {
     const { where, data } = params;
 
     return this.userRepository._update({ where, data });
   }
 
+  /**
+   * Raw update an entity
+   */
+  rawUpdate(params: {
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
+  }): Promise<User> {
+    const { where, data } = params;
+
+    return this.userRepository._update({ where, data });
+  }
+
+  /**
+   * Soft delete an entity
+   */
   softDelete(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
 
@@ -58,6 +85,9 @@ export class UserService {
     });
   }
 
+  /**
+   * Restore an entity
+   */
   restore(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
 
@@ -66,6 +96,9 @@ export class UserService {
     });
   }
 
+  /**
+   * Permanent delete an entity
+   */
   permanentDelete(params: { where: Prisma.UserWhereUniqueInput }): Promise<User> {
     const { where } = params;
 
